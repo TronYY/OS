@@ -1,0 +1,28 @@
+void main(){
+HANDLE Thread1,Thread2,Thread3  //定义三个线程
+
+DWORD dwThread1,dwThread2,dwThread3
+Thread1=createThread(Null,0,Threadfuncfirst,null,0,scdwThread1);
+//Threadfuncfirst函数名，需要定义其实体；要求第一个函数只打印一句话，调用系统时间
+%%
+ThreadFuncfirst(){
+	time(recent.time);
+	printf("%d first thread created",ctime(recent.time));
+	sleep;
+
+
+
+}		
+//第二个分配大小，0表示动态，第三个参数指向线程的函数指针；第四个传递参数，最后一个线程的ID地址、ID变量
+Thread2=createThread(Null,0,Threadfuncsecond,null,0,scdwThread2);
+Thread3=createThread(Null,0,Threadfuncthird,null,0,scdwThread3);
+
+cout<<"	"<<dwThread1<<endl;
+
+::waitforsingleobject(Thread1,INFINITE);
+::waitforsingleobject(Thread2,INFINITE);
+::waitforsingleobject(Thread3,INFINITE);
+::closeHandle(Thread1);
+::closeHandle(Thread2);
+::closeHandle(Thread3);
+}

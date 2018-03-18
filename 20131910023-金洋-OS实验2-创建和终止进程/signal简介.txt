@@ -1,0 +1,71 @@
+对于 信号处理函数 位于 <signal.h> 中.
+void ( *signal( int sig, void (* handler)( int ))) ( int );
+这个函数的声明很是吓人, 一看就难弄懂. 下面是解释用法.
+一步一步解释:
+int (*p)();
+这是一个函数指针, p所指向的函数是一个不带任何参数, 并且返回值为int的一个函数.
+int (*fun())();
+这个式子与上面式子的区别在于用fun()代替了p,而fun()是一个函数,所以说就可以看成是fun()这个函数执行之后,它的返回值是一个函数指针,这个函数指针(其实就是上面的p)所指向的函数是一个不带任何参数,并且返回值为int的一个函数.
+ 
+所以说对于void (*signal(int signo, void (*handler)(int)))(int);就可以看成是signal()函数(它自己是带两个参数,一个为整型,一个为函数指针的函数), 而这个signal()函数的返回值也为一个函数指针,这个函数指针指向一个带一个整型参数,并且返回值为void的一个函数.
+
+而你在写信号处理函数时对于信号处理的函数也是void sig_fun(int signo);这种类型,恰好与上面signal()函数所返回的函数指针所指向的函数是一样的.
+ 
+注意, void ( *signal() )( int );
+signal是一个函数, 它返回一个函数指针, 后者所指向的函数接受一个整型参数 且没有返回值, 仔细看, 是不是siganal( int signo, void (*handler)(int) )的第2个参数了, 对了, 其实他所返回的就是 signal的第2个信号处理函数, 指向信号处理函数, 就可以执行函数了( signal内部时, signal把信号做为参数传递给handler信号处理函数, 接着 signal 函数返回指针, 并且又指向信号处理函数, 就开始执行它)
+对于这个问题, 在<C陷阱与缺陷>这本书中讲得很清晰, 可以看一看.
+ 
+在signal.h头文件中还有以下几个定义
+#define SIG_ERR (void (*)())-1
+#define SIG_DFL (void (*)())0
+#define SIG_IGN (void (*)())1
+ 
+系统调用signal用来设定某个信号的处理方法。该调用声明的格式如下：
+void (*signal(int signum, void (*handler)(int)))(int);
+在使用该调用的进程中加入以下头文件：
+#include <signal.h>
+上述声明格式比较复杂，如果不清楚如何使用，也可以通过下面这种类型定义的格式来使用（POSIX的定义）：
+typedef void (*sighandler_t)(int);
+sighandler_t signal(int signum, sighandler_t handler);
+但这种格式在不同的系统中有不同的类型定义，所以要使用这种格式，最好还是参考一下联机手册。
+在调用中，参数signum指出要设置处理方法的信号。第二个参数handler是一个处理函数，或者是
+SIG_IGN：忽略参数signum所指的信号。
+SIG_DFL：恢复参数signum所指信号的处理方法为默认值。
+传递给信号处理例程的整数参数是信号值，这样可以使得一个信号处理例程处理多个信号。系统调用signal返回值是指定信号signum前一次的处理例程或者错误时返回错误代码SIG_ERR。下面来看一个简单的例子：
+#include <signal.h>
+#include <unistd.h>
+#include <stdio.h>
+void sigroutine(int dunno) {
+switch (dunno) {
+case 1:
+printf("Get a signal -- SIGHUP ");
+break;
+case 2:
+printf("Get a signal -- SIGINT ");
+break;
+case 3:
+printf("Get a signal -- SIGQUIT ");
+break;
+}
+return;
+}
+int main() {
+printf("process id is %d ",getpid());
+signal(SIGHUP, sigroutine); //* 下面设置三个信号的处理方法
+signal(SIGINT, sigroutine);
+signal(SIGQUIT, sigroutine);
+for (;;) ;
+}
+其中信号SIGINT由按下Ctrl-C发出，信号SIGQUIT由按下Ctrl-发出。该程序执行的结果如下：
+localhost:~$ ./sig_test
+process id is 463
+Get a signal -SIGINT //按下Ctrl-C得到的结果
+Get a signal -SIGQUIT //按下Ctrl-得到的结果
+//按下Ctrl-z将进程置于后台
+[1]+ Stopped ./sig_test
+localhost:~$ bg
+[1]+ ./sig_test &
+localhost:~$ kill -HUP 463 //向进程发送SIGHUP信号
+localhost:~$ Get a signal – SIGHUP
+kill -9 463 //向进程发送SIGKILL信号，终止进程
+localhost:~$

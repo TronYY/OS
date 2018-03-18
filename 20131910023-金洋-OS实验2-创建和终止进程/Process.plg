@@ -1,0 +1,41 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Process - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\KINGYA~1\AppData\Local\Temp\RSP68.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/Process.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Doc\OS\实验2\Process.c"
+]
+Creating command line "cl.exe @C:\Users\KINGYA~1\AppData\Local\Temp\RSP68.tmp" 
+Creating temporary file "C:\Users\KINGYA~1\AppData\Local\Temp\RSP69.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/Process.pdb" /debug /machine:I386 /out:"Debug/Process.exe" /pdbtype:sept 
+".\Debug\Process.obj"
+]
+Creating command line "link.exe @C:\Users\KINGYA~1\AppData\Local\Temp\RSP69.tmp"
+<h3>Output Window</h3>
+Compiling...
+Process.c
+E:\Doc\OS\实验2\Process.c(13) : warning C4113: 'void (__cdecl *)()' differs in parameter lists from 'void (__cdecl *)(int )'
+E:\Doc\OS\实验2\Process.c(15) : warning C4013: 'fork' undefined; assuming extern returning int
+E:\Doc\OS\实验2\Process.c(22) : warning C4013: 'sleep' undefined; assuming extern returning int
+E:\Doc\OS\实验2\Process.c(23) : warning C4013: 'kill' undefined; assuming extern returning int
+E:\Doc\OS\实验2\Process.c(25) : warning C4013: 'wait' undefined; assuming extern returning int
+E:\Doc\OS\实验2\Process.c(32) : warning C4113: 'void (__cdecl *)()' differs in parameter lists from 'void (__cdecl *)(int )'
+E:\Doc\OS\实验2\Process.c(40) : error C2181: illegal else without matching if
+E:\Doc\OS\实验2\Process.c(42) : warning C4113: 'void (__cdecl *)()' differs in parameter lists from 'void (__cdecl *)(int )'
+E:\Doc\OS\实验2\Process.c(49) : fatal error C1004: unexpected end of file found
+执行 cl.exe 时出错.
+
+
+
+<h3>Results</h3>
+Process.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
